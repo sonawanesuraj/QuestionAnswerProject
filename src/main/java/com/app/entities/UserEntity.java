@@ -1,19 +1,29 @@
 package com.app.entities;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "users")
+@Where(clause = "is_active=true")
+@SQLDelete(sql = "UPDATE USERS SET is_active=false WHERE id=?")
 public class UserEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,12 +50,16 @@ public class UserEntity {
 	@UpdateTimestamp
 	private Date updatedAt;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.users", cascade = CascadeType.ALL)
+	@JsonBackReference
+	List<UserRoleEntity> userRole;
+
 	public UserEntity() {
 		super();
 	}
 
 	public UserEntity(Long id, String name, String email, String password, boolean isActive, Date createdAt,
-			Date updatedAt) {
+			Date updatedAt, List<UserRoleEntity> userRole) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -54,6 +68,16 @@ public class UserEntity {
 		this.isActive = isActive;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
+		this.userRole = userRole;
+
+	}
+
+	public List<UserRoleEntity> getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(List<UserRoleEntity> userRole) {
+		this.userRole = userRole;
 	}
 
 	public Long getId() {

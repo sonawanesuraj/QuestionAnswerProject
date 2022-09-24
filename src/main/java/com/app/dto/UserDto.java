@@ -9,6 +9,7 @@ public class UserDto {
 
 	@Email(message = "Email is not valid !!")
 	private String email;
+
 	private String password;
 
 	public UserDto() {
