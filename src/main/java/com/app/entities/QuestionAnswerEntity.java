@@ -2,39 +2,25 @@ package com.app.entities;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.annotations.Where;
 
-@Entity
-@Table(name = "user_role")
-@Where(clause = "is_active=true")
-@SQLDelete(sql = "UPDATE user_role SET is_active=false WHERE id=?")
-
-//@AssociationOverrides({ @AssociationOverride(name = "user", joinColumns = @JoinColumn(name = "user_id")),
-// @AssociationOverride(name = "role", joinColumns = @JoinColumn(name =
-// "roleS_id")) })
-
-public class UserRoleEntity {
-
+public class QuestionAnswerEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	private UserEntity user;
+	private QuestionEntity question;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	private RoleEntity role;
+	private AnswerEntity answer;
 
 	private Boolean isActive = true;
 	@CreationTimestamp
@@ -42,8 +28,23 @@ public class UserRoleEntity {
 	@UpdateTimestamp
 	private Date UpdatedAt;
 
-	public UserRoleEntity() {
+	@ManyToOne(fetch = FetchType.LAZY)
+	UserEntity user;
+
+	public QuestionAnswerEntity() {
 		super();
+	}
+
+	public QuestionAnswerEntity(Long id, QuestionEntity question, AnswerEntity answer, Boolean isActive, Date createdAt,
+			Date updatedAt, UserEntity user) {
+		super();
+		this.id = id;
+		this.question = question;
+		this.answer = answer;
+		this.isActive = isActive;
+		this.createdAt = createdAt;
+		UpdatedAt = updatedAt;
+		this.user = user;
 	}
 
 	public Long getId() {
@@ -54,20 +55,20 @@ public class UserRoleEntity {
 		this.id = id;
 	}
 
-	public UserEntity getUser() {
-		return user;
+	public QuestionEntity getQuestion() {
+		return question;
 	}
 
-	public void setUser(UserEntity user) {
-		this.user = user;
+	public void setQuestion(QuestionEntity question) {
+		this.question = question;
 	}
 
-	public RoleEntity getRole() {
-		return role;
+	public AnswerEntity getAnswer() {
+		return answer;
 	}
 
-	public void setRole(RoleEntity role) {
-		this.role = role;
+	public void setAnswer(AnswerEntity answer) {
+		this.answer = answer;
 	}
 
 	public Boolean getIsActive() {
@@ -92,6 +93,14 @@ public class UserRoleEntity {
 
 	public void setUpdatedAt(Date updatedAt) {
 		UpdatedAt = updatedAt;
+	}
+
+	public UserEntity getUser() {
+		return user;
+	}
+
+	public void setUser(UserEntity user) {
+		this.user = user;
 	}
 
 }

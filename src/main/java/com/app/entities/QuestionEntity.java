@@ -21,23 +21,20 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Table(name = "users")
+@Table(name = "questions")
 @Where(clause = "is_active=true")
-@SQLDelete(sql = "UPDATE USERS SET is_active=false WHERE id=?")
-public class UserEntity {
+@SQLDelete(sql = "UPDATE Questions SET is_active=false WHERE id=?")
+public class QuestionEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "user_name ")
-	private String name;
+	@Column(name = "question_name")
+	private String questionName;
 
-	@Column(name = "email", unique = true)
-	private String email;
-
-	@Column(name = "password")
-	private String password;
+	@Column(name = "question_description")
+	private String description;
 
 	@Column(name = "is_active")
 	private boolean isActive = true;
@@ -50,45 +47,29 @@ public class UserEntity {
 	@UpdateTimestamp
 	private Date updatedAt;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-	@JsonBackReference
-	List<UserRoleEntity> userRole;
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "question", cascade = CascadeType.ALL)
 	@JsonBackReference
 	List<UserQuestionEntity> userQuestion;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "question", cascade = CascadeType.ALL)
 	@JsonBackReference
 	List<QuestionAnswerEntity> questionAnswer;
 
-	public UserEntity() {
+	public QuestionEntity() {
 		super();
 	}
 
-	public UserEntity(Long id, String name, String email, String password, boolean isActive, Date createdAt,
-			Date updatedAt, List<UserRoleEntity> userRole, List<UserQuestionEntity> userQuestion,
-			List<QuestionAnswerEntity> questionAnswer) {
+	public QuestionEntity(Long id, String questionName, String description, boolean isActive, Date createdAt,
+			Date updatedAt, List<UserQuestionEntity> userQuestion, List<QuestionAnswerEntity> questionAnswer) {
 		super();
 		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.password = password;
+		this.questionName = questionName;
+		this.description = description;
 		this.isActive = isActive;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
-		this.userRole = userRole;
 		this.userQuestion = userQuestion;
 		this.questionAnswer = questionAnswer;
-
-	}
-
-	public List<UserRoleEntity> getUserRole() {
-		return userRole;
-	}
-
-	public void setUserRole(List<UserRoleEntity> userRole) {
-		this.userRole = userRole;
 	}
 
 	public List<UserQuestionEntity> getUserQuestion() {
@@ -115,28 +96,20 @@ public class UserEntity {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getQuestionName() {
+		return questionName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setQuestionName(String questionName) {
+		this.questionName = questionName;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public boolean isActive() {

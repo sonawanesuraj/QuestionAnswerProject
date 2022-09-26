@@ -58,7 +58,7 @@ public class RoleEntity {
 	@UpdateTimestamp
 	private Date updatedAt;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.roles", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "role", cascade = CascadeType.ALL)
 	@JsonBackReference
 	List<UserRoleEntity> userRole;
 

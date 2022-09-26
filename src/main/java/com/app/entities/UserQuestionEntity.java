@@ -16,15 +16,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Table(name = "user_role")
+@Table(name = "user_question")
 @Where(clause = "is_active=true")
-@SQLDelete(sql = "UPDATE user_role SET is_active=false WHERE id=?")
-
-//@AssociationOverrides({ @AssociationOverride(name = "user", joinColumns = @JoinColumn(name = "user_id")),
-// @AssociationOverride(name = "role", joinColumns = @JoinColumn(name =
-// "roleS_id")) })
-
-public class UserRoleEntity {
+@SQLDelete(sql = "UPDATE user_question SET is_active=false WHERE id=?")
+public class UserQuestionEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +29,7 @@ public class UserRoleEntity {
 	private UserEntity user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	private RoleEntity role;
+	private QuestionEntity question;
 
 	private Boolean isActive = true;
 	@CreationTimestamp
@@ -42,7 +37,7 @@ public class UserRoleEntity {
 	@UpdateTimestamp
 	private Date UpdatedAt;
 
-	public UserRoleEntity() {
+	public UserQuestionEntity() {
 		super();
 	}
 
@@ -62,12 +57,12 @@ public class UserRoleEntity {
 		this.user = user;
 	}
 
-	public RoleEntity getRole() {
-		return role;
+	public QuestionEntity getQuestion() {
+		return question;
 	}
 
-	public void setRole(RoleEntity role) {
-		this.role = role;
+	public void setQuestion(QuestionEntity question) {
+		this.question = question;
 	}
 
 	public Boolean getIsActive() {
