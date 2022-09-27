@@ -76,6 +76,7 @@ public class UserRoleController {
 			return new ResponseEntity<>(iListUserRole, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.print("Not Found...");
+
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 

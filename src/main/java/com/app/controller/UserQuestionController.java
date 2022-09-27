@@ -31,7 +31,7 @@ public class UserQuestionController {
 	private UserQuestionServiceImpl userQuestionServiceImpl;
 
 	@PostMapping()
-	public ResponseEntity<?> addUserRole(@RequestBody UserQuestionDto userQuestionDto) {
+	public ResponseEntity<?> addUserQuestion(@RequestBody UserQuestionDto userQuestionDto) {
 		try {
 
 			UserQuestionDto dto = this.userQuestionServiceImpl.addUserQuestion(userQuestionDto);

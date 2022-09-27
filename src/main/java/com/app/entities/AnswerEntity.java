@@ -3,17 +3,12 @@ package com.app.entities;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -43,32 +38,32 @@ public class AnswerEntity {
 	@UpdateTimestamp
 	private Date UpdatedAt;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "answer", cascade = CascadeType.ALL)
-	@JsonBackReference
-	List<QuestionAnswerEntity> answers;
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "answer", cascade = CascadeType.ALL)
+//	@JsonBackReference
+//	List<QuestionAnswerEntity> questionAnswer;
 
 	public AnswerEntity() {
 		super();
 	}
 
 	public AnswerEntity(Long id, String answer, boolean isActive, Date createdAt, Date updatedAt,
-			List<QuestionAnswerEntity> answers) {
+			List<QuestionAnswerEntity> questionAnswer) {
 		super();
 		this.id = id;
 		this.answer = answer;
 		this.isActive = isActive;
 		CreatedAt = createdAt;
 		UpdatedAt = updatedAt;
-		this.answers = answers;
+		// this.questionAnswer = questionAnswer;
 	}
 
-	public List<QuestionAnswerEntity> getAnswers() {
-		return answers;
-	}
-
-	public void setAnswers(List<QuestionAnswerEntity> answers) {
-		this.answers = answers;
-	}
+//	public List<QuestionAnswerEntity> getQuestionAnswer() {
+//		return questionAnswer;
+//	}
+//
+//	public void setQuestionAnswer(List<QuestionAnswerEntity> questionAnswer) {
+//		this.questionAnswer = questionAnswer;
+//	}
 
 	public Long getId() {
 		return id;
@@ -96,6 +91,7 @@ public class AnswerEntity {
 
 	public Date getCreatedAt() {
 		return CreatedAt;
+
 	}
 
 	public void setCreatedAt(Date createdAt) {

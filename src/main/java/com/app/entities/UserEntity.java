@@ -58,9 +58,9 @@ public class UserEntity {
 	@JsonBackReference
 	List<UserQuestionEntity> userQuestion;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-	@JsonBackReference
-	List<QuestionAnswerEntity> questionAnswer;
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+//	@JsonBackReference
+//	List<QuestionAnswerEntity> questionAnswer;
 
 	public UserEntity() {
 		super();
@@ -79,7 +79,7 @@ public class UserEntity {
 		this.updatedAt = updatedAt;
 		this.userRole = userRole;
 		this.userQuestion = userQuestion;
-		this.questionAnswer = questionAnswer;
+		// this.questionAnswer = questionAnswer;
 
 	}
 
@@ -99,13 +99,13 @@ public class UserEntity {
 		this.userQuestion = userQuestion;
 	}
 
-	public List<QuestionAnswerEntity> getQuestionAnswer() {
-		return questionAnswer;
-	}
-
-	public void setQuestionAnswer(List<QuestionAnswerEntity> questionAnswer) {
-		this.questionAnswer = questionAnswer;
-	}
+//	public List<QuestionAnswerEntity> getQuestionAnswer() {
+//		return questionAnswer;
+//	}
+//
+//	public void setQuestionAnswer(List<QuestionAnswerEntity> questionAnswer) {
+//		this.questionAnswer = questionAnswer;
+//	}
 
 	public Long getId() {
 		return id;

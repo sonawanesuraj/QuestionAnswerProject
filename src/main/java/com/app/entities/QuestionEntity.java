@@ -72,20 +72,20 @@ public class QuestionEntity {
 		this.questionAnswer = questionAnswer;
 	}
 
-	public List<UserQuestionEntity> getUserQuestion() {
-		return userQuestion;
-	}
-
-	public void setUserQuestion(List<UserQuestionEntity> userQuestion) {
-		this.userQuestion = userQuestion;
-	}
-
 	public List<QuestionAnswerEntity> getQuestionAnswer() {
 		return questionAnswer;
 	}
 
 	public void setQuestionAnswer(List<QuestionAnswerEntity> questionAnswer) {
 		this.questionAnswer = questionAnswer;
+	}
+
+	public List<UserQuestionEntity> getUserQuestion() {
+		return userQuestion;
+	}
+
+	public void setUserQuestion(List<UserQuestionEntity> userQuestion) {
+		this.userQuestion = userQuestion;
 	}
 
 	public Long getId() {
