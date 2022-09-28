@@ -67,8 +67,7 @@ public class UserEntity {
 	}
 
 	public UserEntity(Long id, String name, String email, String password, boolean isActive, Date createdAt,
-			Date updatedAt, List<UserRoleEntity> userRole, List<UserQuestionEntity> userQuestion,
-			List<QuestionAnswerEntity> questionAnswer) {
+			Date updatedAt, List<UserRoleEntity> userRole, List<UserQuestionEntity> userQuestion) {
 		super();
 		this.id = id;
 		this.name = name;

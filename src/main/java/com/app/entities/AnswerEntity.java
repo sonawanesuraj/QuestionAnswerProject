@@ -1,13 +1,14 @@
 package com.app.entities;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -38,32 +39,27 @@ public class AnswerEntity {
 	@UpdateTimestamp
 	private Date UpdatedAt;
 
-//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "answer", cascade = CascadeType.ALL)
-//	@JsonBackReference
-//	List<QuestionAnswerEntity> questionAnswer;
+	@OneToOne(fetch = FetchType.LAZY)
+	private UserEntity user;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	private QuestionEntity question;
 
 	public AnswerEntity() {
 		super();
 	}
 
-	public AnswerEntity(Long id, String answer, boolean isActive, Date createdAt, Date updatedAt,
-			List<QuestionAnswerEntity> questionAnswer) {
+	public AnswerEntity(Long id, String answer, boolean isActive, Date createdAt, Date updatedAt, UserEntity user,
+			QuestionEntity question) {
 		super();
 		this.id = id;
 		this.answer = answer;
 		this.isActive = isActive;
 		CreatedAt = createdAt;
 		UpdatedAt = updatedAt;
-		// this.questionAnswer = questionAnswer;
+		this.user = user;
+		this.question = question;
 	}
-
-//	public List<QuestionAnswerEntity> getQuestionAnswer() {
-//		return questionAnswer;
-//	}
-//
-//	public void setQuestionAnswer(List<QuestionAnswerEntity> questionAnswer) {
-//		this.questionAnswer = questionAnswer;
-//	}
 
 	public Long getId() {
 		return id;
@@ -91,7 +87,6 @@ public class AnswerEntity {
 
 	public Date getCreatedAt() {
 		return CreatedAt;
-
 	}
 
 	public void setCreatedAt(Date createdAt) {
@@ -104,6 +99,22 @@ public class AnswerEntity {
 
 	public void setUpdatedAt(Date updatedAt) {
 		UpdatedAt = updatedAt;
+	}
+
+	public UserEntity getUser() {
+		return user;
+	}
+
+	public void setUser(UserEntity user) {
+		this.user = user;
+	}
+
+	public QuestionEntity getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(QuestionEntity question) {
+		this.question = question;
 	}
 
 }

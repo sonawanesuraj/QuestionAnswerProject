@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,51 +16,42 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Table(name = "question_answer")
+@Table(name = "role_permission")
 @Where(clause = "is_active=true")
-@SQLDelete(sql = "UPDATE question_answer SET is_active=false WHERE id=?")
-public class QuestionAnswerEntity {
+@SQLDelete(sql = "UPDATE role_permission SET is_active=false WHERE id=?")
+public class RolePermissionEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	private QuestionEntity question;
+	private RoleEntity role;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	private AnswerEntity answer;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private PermissionEntity permission;
 
 	private Boolean isActive = true;
+
 	@CreationTimestamp
 	private Date createdAt;
+
 	@UpdateTimestamp
 	private Date UpdatedAt;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	UserEntity user;
-
-	public QuestionAnswerEntity() {
+	public RolePermissionEntity() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public QuestionAnswerEntity(Long id, QuestionEntity question, AnswerEntity answer, Boolean isActive, Date createdAt,
+	public RolePermissionEntity(Long id, RoleEntity role, PermissionEntity permission, Boolean isActive, Date createdAt,
 			Date updatedAt) {
 		super();
 		this.id = id;
-		this.question = question;
-		this.answer = answer;
+		this.role = role;
+		this.permission = permission;
 		this.isActive = isActive;
 		this.createdAt = createdAt;
 		UpdatedAt = updatedAt;
-		this.user = user;
-	}
-
-	public AnswerEntity getAnswers() {
-		return answer;
-	}
-
-	public void setAnswers(AnswerEntity answers) {
-		this.answer = answers;
 	}
 
 	public Long getId() {
@@ -72,12 +62,20 @@ public class QuestionAnswerEntity {
 		this.id = id;
 	}
 
-	public QuestionEntity getQuestion() {
-		return question;
+	public RoleEntity getRole() {
+		return role;
 	}
 
-	public void setQuestion(QuestionEntity question) {
-		this.question = question;
+	public void setRole(RoleEntity role) {
+		this.role = role;
+	}
+
+	public PermissionEntity getPermission() {
+		return permission;
+	}
+
+	public void setPermission(PermissionEntity permission) {
+		this.permission = permission;
 	}
 
 	public Boolean getIsActive() {
@@ -102,14 +100,6 @@ public class QuestionAnswerEntity {
 
 	public void setUpdatedAt(Date updatedAt) {
 		UpdatedAt = updatedAt;
-	}
-
-	public UserEntity getUser() {
-		return user;
-	}
-
-	public void setUser(UserEntity user) {
-		this.user = user;
 	}
 
 }

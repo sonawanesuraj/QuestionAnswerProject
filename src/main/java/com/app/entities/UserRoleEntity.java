@@ -19,7 +19,6 @@ import org.hibernate.annotations.Where;
 @Table(name = "user_role")
 @Where(clause = "is_active=true")
 @SQLDelete(sql = "UPDATE user_role SET is_active=false WHERE id=?")
-
 //@AssociationOverrides({ @AssociationOverride(name = "user", joinColumns = @JoinColumn(name = "user_id")),
 // @AssociationOverride(name = "role", joinColumns = @JoinColumn(name =
 // "roleS_id")) })

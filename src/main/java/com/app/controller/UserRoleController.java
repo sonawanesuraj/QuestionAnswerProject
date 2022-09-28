@@ -7,7 +7,7 @@ import com.app.dto.IListUserRole;
 import com.app.dto.SuccessResponseDto;
 import com.app.dto.UserRoleDto;
 import com.app.entities.UserRoleEntity;
-import com.app.serviceImpl.UserRoleServiceImpl;
+import com.app.serviceInterface.UserRoleInterface;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,13 +28,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserRoleController {
 
 	@Autowired
-	private UserRoleServiceImpl userRoleServiceImpl;
+	private UserRoleInterface userRoleInterface;
 
 	@PostMapping()
 	public ResponseEntity<?> addUserRole(@RequestBody UserRoleDto userRoleDto) {
 		try {
 
-			UserRoleDto dto = this.userRoleServiceImpl.addUserRole(userRoleDto);
+			UserRoleDto dto = this.userRoleInterface.addUserRole(userRoleDto);
 
 			return new ResponseEntity<>(new SuccessResponseDto("Assign Succefully", "Assigned", "added"),
 					HttpStatus.OK);
@@ -48,7 +48,7 @@ public class UserRoleController {
 
 	@PutMapping("/{id}")
 	public UserRoleDto updateUserRole(@PathVariable Long id, @RequestBody UserRoleDto userRoleDto) {
-		return this.userRoleServiceImpl.updateRoleOrUser(id, userRoleDto);
+		return this.userRoleInterface.updateRoleOrUser(id, userRoleDto);
 
 	}
 
@@ -56,7 +56,7 @@ public class UserRoleController {
 	public ResponseEntity<?> deleteUserTopic(@PathVariable Long id) {
 
 		try {
-			UserRoleEntity userTopicEntity = this.userRoleServiceImpl.deleteUserRole(id);
+			UserRoleEntity userTopicEntity = this.userRoleInterface.deleteUserRole(id);
 
 			return new ResponseEntity<>(
 					new SuccessResponseDto("Deleted Succesfully", "Deleted", userTopicEntity.getId()), HttpStatus.OK);
@@ -72,7 +72,7 @@ public class UserRoleController {
 	public ResponseEntity<?> getUserRoleById(@PathVariable Long id) {
 		try {
 
-			List<IListUserRole> iListUserRole = this.userRoleServiceImpl.getUserRoleById(id);
+			List<IListUserRole> iListUserRole = this.userRoleInterface.getUserRoleById(id);
 			return new ResponseEntity<>(iListUserRole, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.print("Not Found...");
@@ -85,7 +85,7 @@ public class UserRoleController {
 	@GetMapping()
 	public ResponseEntity<?> getAllUserRole(@RequestParam(defaultValue = "") String search,
 			@RequestParam(defaultValue = "1") String pageNo, @RequestParam(defaultValue = "5") String PageSize) {
-		Page<IListUserRole> userRole = userRoleServiceImpl.getAllUserRole(search, pageNo, PageSize);
+		Page<IListUserRole> userRole = this.userRoleInterface.getAllUserRole(search, pageNo, PageSize);
 
 		if (userRole.getTotalElements() != 0) {
 			return new ResponseEntity<>(new SuccessResponseDto("All UserRole", "Success", userRole.getContent()),

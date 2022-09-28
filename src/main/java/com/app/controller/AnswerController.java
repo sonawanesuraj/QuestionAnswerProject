@@ -2,6 +2,8 @@ package com.app.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.app.dto.AnswerDto;
 import com.app.dto.ErrorResponseDto;
 import com.app.dto.IListAnswerDto;
@@ -39,10 +41,10 @@ public class AnswerController {
 	private AnswerInterface answerInterface;
 
 	@PostMapping()
-	public ResponseEntity<?> addAnswer(@RequestBody AnswerDto answerDto) {
+	public ResponseEntity<?> addAnswer(@RequestBody AnswerDto answerDto, HttpServletRequest request) {
 
 		try {
-			answerDto = this.answerInterface.addAnswer(answerDto);
+			answerDto = this.answerInterface.addAnswer(answerDto, request);
 			return new ResponseEntity<>(
 					new SuccessResponseDto("Answer Added Successfully", "Answer Added", "Data added"),
 					HttpStatus.ACCEPTED);
@@ -68,7 +70,7 @@ public class AnswerController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteQuestion(@PathVariable(name = "id") Long id) throws ResourceNotFoundException {
+	public ResponseEntity<?> deleteAnswer(@PathVariable(name = "id") Long id) throws ResourceNotFoundException {
 		try {
 			answerServiceImpl.deleteAnswer(id);
 			return ResponseEntity.ok(new SuccessResponseDto("Deleted Succesfully", "Deleted", id));
@@ -93,7 +95,7 @@ public class AnswerController {
 	}
 
 	@GetMapping()
-	public ResponseEntity<?> getAllUserRole(@RequestParam(defaultValue = "") String search,
+	public ResponseEntity<?> getAllAnswer(@RequestParam(defaultValue = "") String search,
 			@RequestParam(defaultValue = "1") String pageNo, @RequestParam(defaultValue = "5") String PageSize) {
 		Page<IListAnswerDto> Answer = answerServiceImpl.getAllAnswer(search, pageNo, PageSize);
 

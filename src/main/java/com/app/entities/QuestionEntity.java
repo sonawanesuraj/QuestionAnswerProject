@@ -51,16 +51,16 @@ public class QuestionEntity {
 	@JsonBackReference
 	List<UserQuestionEntity> userQuestion;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "question", cascade = CascadeType.ALL)
-	@JsonBackReference
-	List<QuestionAnswerEntity> questionAnswer;
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "question", cascade = CascadeType.ALL)
+//	@JsonBackReference
+//	List<QuestionAnswerEntity> questionAnswer;
 
 	public QuestionEntity() {
 		super();
 	}
 
 	public QuestionEntity(Long id, String questionName, String description, boolean isActive, Date createdAt,
-			Date updatedAt, List<UserQuestionEntity> userQuestion, List<QuestionAnswerEntity> questionAnswer) {
+			Date updatedAt, List<UserQuestionEntity> userQuestion) {
 		super();
 		this.id = id;
 		this.questionName = questionName;
@@ -69,16 +69,16 @@ public class QuestionEntity {
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 		this.userQuestion = userQuestion;
-		this.questionAnswer = questionAnswer;
+//		this.questionAnswer = questionAnswer;
 	}
 
-	public List<QuestionAnswerEntity> getQuestionAnswer() {
-		return questionAnswer;
-	}
-
-	public void setQuestionAnswer(List<QuestionAnswerEntity> questionAnswer) {
-		this.questionAnswer = questionAnswer;
-	}
+//	public List<QuestionAnswerEntity> getQuestionAnswer() {
+//		return questionAnswer;
+//	}
+//
+//	public void setQuestionAnswer(List<QuestionAnswerEntity> questionAnswer) {
+//		this.questionAnswer = questionAnswer;
+//	}
 
 	public List<UserQuestionEntity> getUserQuestion() {
 		return userQuestion;
