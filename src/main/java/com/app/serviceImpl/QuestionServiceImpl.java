@@ -26,6 +26,7 @@ public class QuestionServiceImpl implements QuestionInterface {
 		QuestionEntity questionEntity = new QuestionEntity();
 		questionEntity.setQuestionName(questionDto.getQuestionName());
 		questionEntity.setDescription(questionDto.getDescription());
+		questionEntity.setDraft(questionDto.isIs_Draft());
 		this.questionRepository.save(questionEntity);
 		return questionDto;
 
@@ -57,10 +58,31 @@ public class QuestionServiceImpl implements QuestionInterface {
 
 	@Override
 	public Page<IListQuestionDto> getAllQuestions(String search, String pageNumber, String pageSize) {
+
 		Pageable paging = new Pagination().getPagination(pageNumber, pageSize);
 
 		Page<IListQuestionDto> iListQuestionDto;
-		iListQuestionDto = questionRepository.findByOrderByIdAsc(paging, IListQuestionDto.class);
+
+		if ((search == "") || (search == null) || (search.length() == 0)) {
+
+			iListQuestionDto = questionRepository.findByOrderByIdAsc(paging, IListQuestionDto.class);
+
+		} else {
+
+			iListQuestionDto = questionRepository.findByQuestionName(search, paging, IListQuestionDto.class);
+
+		}
+
+		return iListQuestionDto;
+
+	}
+
+	@Override
+	public Page<IListQuestionDto> getAllDraft(Boolean search, String pageNumber, String pageSize) {
+		Pageable paging = new Pagination().getPagination(pageNumber, pageSize);
+
+		Page<IListQuestionDto> iListQuestionDto;
+		iListQuestionDto = questionRepository.findByIsDraftOrderByIdAsc(true, paging, IListQuestionDto.class);
 
 		return iListQuestionDto;
 

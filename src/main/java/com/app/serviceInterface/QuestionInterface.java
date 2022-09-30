@@ -19,4 +19,6 @@ public interface QuestionInterface {
 
 	public Page<IListQuestionDto> getAllQuestions(String search, String pageNumber, String pageSize);
 
+	public Page<IListQuestionDto> getAllDraft(Boolean search, String pageNumber, String pageSize);
+
 }

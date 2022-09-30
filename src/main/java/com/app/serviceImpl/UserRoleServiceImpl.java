@@ -34,7 +34,7 @@ public class UserRoleServiceImpl implements UserRoleInterface {
 
 	@Override
 	public UserRoleDto addUserRole(UserRoleDto userRoleDto) {
-		UserRoleEntity userRoleEntity = this.userRoleRepository.findByUserId(userRoleDto.getUserId(),
+		UserRoleEntity userRoleEntity = this.userRoleRepository.findByUserandRoleId(userRoleDto.getUserId(),
 				userRoleDto.getRoleId());
 
 		if (userRoleEntity == null) {

@@ -13,8 +13,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
 
-//	AnswerEntity findByAnswer(String answer);
-
 	List<IListAnswerDto> findById(Long id, Class<IListAnswerDto> class1);
 
 	Page<IListAnswerDto> findByOrderByIdAsc(Pageable paging, Class<IListAnswerDto> class1);

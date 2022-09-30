@@ -4,17 +4,19 @@ public class QuestionDto {
 	private Long id;
 	private String questionName;
 	private String description;
+	private boolean is_Draft;
 
 	public QuestionDto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public QuestionDto(Long id, String questionName, String description) {
+	public QuestionDto(Long id, String questionName, String description, boolean is_Draft) {
 		super();
+		this.id = id;
 		this.questionName = questionName;
 		this.description = description;
-		this.id = id;
+		this.is_Draft = is_Draft;
 	}
 
 	public Long getId() {
@@ -39,6 +41,14 @@ public class QuestionDto {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public boolean isIs_Draft() {
+		return is_Draft;
+	}
+
+	public void setIs_Draft(boolean is_Draft) {
+		this.is_Draft = is_Draft;
 	}
 
 }

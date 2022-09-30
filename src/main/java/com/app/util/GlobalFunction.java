@@ -10,19 +10,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class GlobalFunction {
 
-	public static final String USER_ID = "User-Id";
-
 	@Autowired
 	static jwtTokenUtil jwtTokenUtil;
 
 	@Autowired
 	static AuthRepository authRepository;
 
-	public static void getUserId(HttpServletRequest request) {
+	@Autowired
+	static HttpServletRequest request;
+
+	public static Long getUserId(Long userId) {
 		final String header = request.getHeader("Authorization");
 		String requestToken = header.substring(7);
 		final String email = jwtTokenUtil.getEmailFromToken(requestToken);
 		UserEntity userEntity = authRepository.findByEmailContainingIgnoreCase(email);
-		request.setAttribute("User-Id", userEntity.getId());
+		System.out.println("TOKEN :" + requestToken);
+		return userEntity.getId();
+
 	}
 }

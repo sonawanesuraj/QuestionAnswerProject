@@ -39,8 +39,7 @@ public class AnswerEntity {
 	@UpdateTimestamp
 	private Date UpdatedAt;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	private UserEntity user;
+	private Long userId;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	private QuestionEntity question;
@@ -49,7 +48,7 @@ public class AnswerEntity {
 		super();
 	}
 
-	public AnswerEntity(Long id, String answer, boolean isActive, Date createdAt, Date updatedAt, UserEntity user,
+	public AnswerEntity(Long id, String answer, boolean isActive, Date createdAt, Date updatedAt, Long userId,
 			QuestionEntity question) {
 		super();
 		this.id = id;
@@ -57,7 +56,7 @@ public class AnswerEntity {
 		this.isActive = isActive;
 		CreatedAt = createdAt;
 		UpdatedAt = updatedAt;
-		this.user = user;
+		this.userId = userId;
 		this.question = question;
 	}
 
@@ -101,12 +100,12 @@ public class AnswerEntity {
 		UpdatedAt = updatedAt;
 	}
 
-	public UserEntity getUser() {
-		return user;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUser(UserEntity user) {
-		this.user = user;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public QuestionEntity getQuestion() {

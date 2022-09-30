@@ -100,8 +100,8 @@ public class QuestionController {
 
 	@GetMapping()
 	public ResponseEntity<?> getAllQuestions(@RequestParam(defaultValue = "") String search,
-			@RequestParam(defaultValue = "1") String pageNo, @RequestParam(defaultValue = "5") String PageSize) {
-		Page<IListQuestionDto> question = questionServiceImpl.getAllQuestions(search, pageNo, PageSize);
+			@RequestParam(defaultValue = "1") String PageNo, @RequestParam(defaultValue = "7") String PageSize) {
+		Page<IListQuestionDto> question = questionInterface.getAllQuestions(search, PageNo, PageSize);
 
 		if (question.getTotalElements() != 0) {
 			return new ResponseEntity<>(new SuccessResponseDto("All Questions", "Success", question.getContent()),
@@ -111,4 +111,20 @@ public class QuestionController {
 
 		return new ResponseEntity<>(new ErrorResponseDto("Data Not Found", "Data Not Found"), HttpStatus.NOT_FOUND);
 	}
+
+	@GetMapping("/draft")
+	public ResponseEntity<?> getAllDraftRecord(@RequestParam(defaultValue = "") String search,
+			@RequestParam(defaultValue = "1") String pageNo, @RequestParam(defaultValue = "5") String PageSize) {
+		Page<IListQuestionDto> question = questionInterface.getAllDraft(true, pageNo, PageSize);
+
+		if (question.getTotalElements() != 0) {
+			return new ResponseEntity<>(
+					new SuccessResponseDto("All Draft  true Records ", "Success", question.getContent()),
+					HttpStatus.OK);
+
+		}
+
+		return new ResponseEntity<>(new ErrorResponseDto("Data Not Found", "Data Not Found"), HttpStatus.NOT_FOUND);
+	}
+
 }

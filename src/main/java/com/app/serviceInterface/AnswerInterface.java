@@ -11,14 +11,14 @@ import org.springframework.data.domain.Page;
 
 public interface AnswerInterface {
 
-	AnswerDto addAnswer(AnswerDto answerDto, HttpServletRequest request);
+	public AnswerDto updateAnswer(Long id, AnswerDto answerDto, HttpServletRequest request);
 
-	public AnswerDto updateAnswer(Long id, AnswerDto answerDto);
-
-	public void deleteAnswer(Long id);
+	public void deleteAnswer(Long id, HttpServletRequest request) throws Exception;
 
 	public List<IListAnswerDto> getAnswerById(Long id);
 
 	Page<IListAnswerDto> getAllAnswer(String search, String pageNumber, String pageSize);
+
+	AnswerDto addAnswer(AnswerDto answerDto, HttpServletRequest request);
 
 }

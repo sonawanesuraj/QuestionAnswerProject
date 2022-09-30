@@ -15,8 +15,12 @@ public interface QuestionRepository extends JpaRepository<QuestionEntity, Long> 
 
 	QuestionEntity findByQuestionNameContainingIgnoreCase(String questionName);
 
+	Page<IListQuestionDto> findByOrderByIdAsc(Pageable page, Class<IListQuestionDto> iListQuestionDto);
+
+	Page<IListQuestionDto> findByQuestionName(String search, Pageable paging, Class<IListQuestionDto> class1);
+
 	List<IListQuestionDto> findById(Long id, Class<IListQuestionDto> class1);
 
-	Page<IListQuestionDto> findByOrderByIdAsc(Pageable paging, Class<IListQuestionDto> class1);
+	Page<IListQuestionDto> findByIsDraftOrderByIdAsc(Boolean search, Pageable paging, Class<IListQuestionDto> class1);
 
 }

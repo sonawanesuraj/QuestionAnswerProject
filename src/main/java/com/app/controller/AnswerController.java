@@ -57,9 +57,10 @@ public class AnswerController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateAnswer(@RequestBody AnswerDto answerDto, @PathVariable long id) {
+	public ResponseEntity<?> updateAnswer(@RequestBody AnswerDto answerDto, @PathVariable long id,
+			HttpServletRequest request) {
 		try {
-			answerDto = this.answerInterface.updateAnswer(id, answerDto);
+			answerDto = this.answerInterface.updateAnswer(id, answerDto, request);
 			return new ResponseEntity<>(
 					new SuccessResponseDto(" Answer updated sucessfully", "Answer updated !!", answerDto),
 					HttpStatus.CREATED);
@@ -70,9 +71,10 @@ public class AnswerController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteAnswer(@PathVariable(name = "id") Long id) throws ResourceNotFoundException {
+	public ResponseEntity<?> deleteAnswer(@PathVariable(name = "id") Long id, HttpServletRequest request)
+			throws ResourceNotFoundException {
 		try {
-			answerServiceImpl.deleteAnswer(id);
+			answerInterface.deleteAnswer(id, request);
 			return ResponseEntity.ok(new SuccessResponseDto("Deleted Succesfully", "Deleted", id));
 		} catch (Exception e) {
 

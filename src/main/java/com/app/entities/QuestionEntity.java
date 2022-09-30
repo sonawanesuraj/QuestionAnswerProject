@@ -47,20 +47,19 @@ public class QuestionEntity {
 	@UpdateTimestamp
 	private Date updatedAt;
 
+	@Column(name = "is_draft")
+	private boolean isDraft = false;
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "question", cascade = CascadeType.ALL)
 	@JsonBackReference
 	List<UserQuestionEntity> userQuestion;
-
-//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "question", cascade = CascadeType.ALL)
-//	@JsonBackReference
-//	List<QuestionAnswerEntity> questionAnswer;
 
 	public QuestionEntity() {
 		super();
 	}
 
 	public QuestionEntity(Long id, String questionName, String description, boolean isActive, Date createdAt,
-			Date updatedAt, List<UserQuestionEntity> userQuestion) {
+			Date updatedAt, boolean isDraft, List<UserQuestionEntity> userQuestion) {
 		super();
 		this.id = id;
 		this.questionName = questionName;
@@ -68,23 +67,7 @@ public class QuestionEntity {
 		this.isActive = isActive;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
-		this.userQuestion = userQuestion;
-//		this.questionAnswer = questionAnswer;
-	}
-
-//	public List<QuestionAnswerEntity> getQuestionAnswer() {
-//		return questionAnswer;
-//	}
-//
-//	public void setQuestionAnswer(List<QuestionAnswerEntity> questionAnswer) {
-//		this.questionAnswer = questionAnswer;
-//	}
-
-	public List<UserQuestionEntity> getUserQuestion() {
-		return userQuestion;
-	}
-
-	public void setUserQuestion(List<UserQuestionEntity> userQuestion) {
+		this.isDraft = isDraft;
 		this.userQuestion = userQuestion;
 	}
 
@@ -134,6 +117,22 @@ public class QuestionEntity {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public boolean isDraft() {
+		return isDraft;
+	}
+
+	public void setDraft(boolean isDraft) {
+		this.isDraft = isDraft;
+	}
+
+	public List<UserQuestionEntity> getUserQuestion() {
+		return userQuestion;
+	}
+
+	public void setUserQuestion(List<UserQuestionEntity> userQuestion) {
+		this.userQuestion = userQuestion;
 	}
 
 }
