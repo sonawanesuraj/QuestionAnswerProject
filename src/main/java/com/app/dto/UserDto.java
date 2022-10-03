@@ -1,13 +1,19 @@
 package com.app.dto;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class UserDto {
 
 	private Long id;
 	private String name;
 
-	@Email(message = "Email is not valid !!")
+	@Email(message = "email is not valid")
+	@NotBlank(message = "email is Required*emailNameRequired")
+	@NotEmpty(message = "email is Required*emailNameRequired")
+	@NotNull(message = "email is Required*emailRequired")
 	private String email;
 
 	private String password;

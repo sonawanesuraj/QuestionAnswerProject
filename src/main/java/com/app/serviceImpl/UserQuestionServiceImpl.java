@@ -3,15 +3,21 @@ package com.app.serviceImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import com.app.configuration.jwtTokenUtil;
 import com.app.dto.IListUserQuestion;
 import com.app.dto.UserQuestionDto;
 import com.app.entities.QuestionEntity;
 import com.app.entities.UserEntity;
 import com.app.entities.UserQuestionEntity;
+import com.app.entities.UserRoleEntity;
 import com.app.exception.ResourceNotFoundException;
+import com.app.repository.AuthRepository;
 import com.app.repository.QuestionRepository;
 import com.app.repository.UserQuestionRepository;
 import com.app.repository.UserRepository;
+import com.app.repository.UserRoleRepository;
 import com.app.serviceInterface.UserQuestionInterface;
 import com.app.util.Pagination;
 
@@ -31,6 +37,15 @@ public class UserQuestionServiceImpl implements UserQuestionInterface {
 
 	@Autowired
 	private QuestionRepository questionRepository;
+
+	@Autowired
+	private jwtTokenUtil jwtTokenUtil;
+
+	@Autowired
+	private AuthRepository authRepository;
+
+	@Autowired
+	private UserRoleRepository userRoleRepository;
 
 	@Override
 	public UserQuestionDto addUserQuestion(UserQuestionDto userQuestionDto) {
@@ -102,4 +117,27 @@ public class UserQuestionServiceImpl implements UserQuestionInterface {
 
 	}
 
+	@Override
+	public List<IListUserQuestion> filterAllUserRecord(Long id, HttpServletRequest request) throws Exception {
+		List<IListUserQuestion> iListUserQuestion;
+
+		final String header = request.getHeader("Authorization");
+		String requestToken = header.substring(7);
+		final String email = jwtTokenUtil.getEmailFromToken(requestToken);
+		UserEntity userEntity = authRepository.findByEmailContainingIgnoreCase(email);
+		Long userId = userEntity.getId();
+		UserRoleEntity userRoleEntity = userRoleRepository.findRoleIdByUserId(userId);
+		String userRole = userRoleEntity.getRole().getRoleName();
+
+		if (userRole.equals("admin")) {
+
+			iListUserQuestion = this.userQuestionRepository.findQuationIdByUserId(id, IListUserQuestion.class);
+
+			return iListUserQuestion;
+
+		} else {
+			throw new Exception("this user is not a admin , only admin have a access to see users information");
+		}
+
+	}
 }

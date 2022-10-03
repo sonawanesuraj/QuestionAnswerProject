@@ -50,6 +50,12 @@ public class QuestionEntity {
 	@Column(name = "is_draft")
 	private boolean isDraft = false;
 
+	@Column(name = "date")
+	private Date date;
+
+	@Column(name = "is_flag")
+	private boolean isFlag = false;
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "question", cascade = CascadeType.ALL)
 	@JsonBackReference
 	List<UserQuestionEntity> userQuestion;
@@ -59,7 +65,7 @@ public class QuestionEntity {
 	}
 
 	public QuestionEntity(Long id, String questionName, String description, boolean isActive, Date createdAt,
-			Date updatedAt, boolean isDraft, List<UserQuestionEntity> userQuestion) {
+			Date updatedAt, boolean isDraft, Date date, boolean isFlag, List<UserQuestionEntity> userQuestion) {
 		super();
 		this.id = id;
 		this.questionName = questionName;
@@ -68,6 +74,8 @@ public class QuestionEntity {
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 		this.isDraft = isDraft;
+		this.date = date;
+		this.isFlag = isFlag;
 		this.userQuestion = userQuestion;
 	}
 
@@ -125,6 +133,22 @@ public class QuestionEntity {
 
 	public void setDraft(boolean isDraft) {
 		this.isDraft = isDraft;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public boolean isFlag() {
+		return isFlag;
+	}
+
+	public void setFlag(boolean isFlag) {
+		this.isFlag = isFlag;
 	}
 
 	public List<UserQuestionEntity> getUserQuestion() {

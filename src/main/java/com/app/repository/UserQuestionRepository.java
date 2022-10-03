@@ -30,4 +30,6 @@ public interface UserQuestionRepository extends JpaRepository<UserQuestionEntity
 
 	Page<IListUserQuestion> findByOrderByIdAsc(Pageable paging, Class<IListUserQuestion> class1);
 
+	List<IListUserQuestion> findQuationIdByUserId(Long id, Class<IListUserQuestion> class1);
+
 }

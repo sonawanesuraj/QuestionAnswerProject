@@ -45,8 +45,8 @@ public class UserController {
 
 	@GetMapping()
 	public ResponseEntity<?> getAllUsers(@RequestParam(defaultValue = "") String search,
-			@RequestParam(defaultValue = "1") String pageNo, @RequestParam(defaultValue = "5") String PageSize) {
-		Page<IUserListDto> user = userServiceImpl.getAllUsers(search, pageNo, PageSize);
+			@RequestParam(defaultValue = "1") String pageNo, @RequestParam(defaultValue = "5") String pageSize) {
+		Page<IUserListDto> user = userServiceImpl.getAllUsers(search, pageNo, pageSize);
 
 		if (user.getTotalElements() != 0) {
 			return new ResponseEntity<>(

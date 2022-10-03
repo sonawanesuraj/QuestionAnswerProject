@@ -1,22 +1,30 @@
 package com.app.dto;
 
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+
 public class QuestionDto {
 	private Long id;
 	private String questionName;
 	private String description;
 	private boolean is_Draft;
+	@JsonFormat(pattern = "yyyy-MM-dd", shape = Shape.STRING)
+	private Date date;
 
 	public QuestionDto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public QuestionDto(Long id, String questionName, String description, boolean is_Draft) {
+	public QuestionDto(Long id, String questionName, String description, boolean is_Draft, Date date) {
 		super();
 		this.id = id;
 		this.questionName = questionName;
 		this.description = description;
 		this.is_Draft = is_Draft;
+		this.date = date;
 	}
 
 	public Long getId() {
@@ -49,6 +57,14 @@ public class QuestionDto {
 
 	public void setIs_Draft(boolean is_Draft) {
 		this.is_Draft = is_Draft;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 }

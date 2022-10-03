@@ -48,27 +48,37 @@ public class AnswerServiceImpl implements AnswerInterface {
 		AnswerEntity answerEntity = new AnswerEntity();
 		answerEntity.setAnswer(answerDto.getAnswer());
 		QuestionEntity questionEntity = questionRepository.findById(answerDto.getQuestion())
-				.orElseThrow(() -> new ResourceNotFoundException());
+				.orElseThrow(() -> new ResourceNotFoundException("Question Not Found"));
 		final String header = request.getHeader("Authorization");
 		String requestToken = header.substring(7);
 		final String email = jwtTokenUtil.getEmailFromToken(requestToken);
 		UserEntity userEntity = authRepository.findByEmailContainingIgnoreCase(email);
-		answerEntity.setUserId(userEntity.getId());
+		Long userId = userEntity.getId();
+		answerEntity.setUserId(userId);
 		answerEntity.setQuestion(questionEntity);
 		answerRepository.save(answerEntity);
 		return answerDto;
 	}
 
 	@Override
-	public AnswerDto updateAnswer(Long id, AnswerDto answerDto, HttpServletRequest request) {
-		AnswerEntity answerEntity = this.answerRepository.findById(id).orElseThrow();
+	public AnswerDto updateAnswer(Long id, AnswerDto answerDto, HttpServletRequest request) throws Exception {
+
 		final String header = request.getHeader("Authorization");
 		String requestToken = header.substring(7);
 		final String email = jwtTokenUtil.getEmailFromToken(requestToken);
 		UserEntity userEntity = authRepository.findByEmailContainingIgnoreCase(email);
-		answerEntity.setUserId(userEntity.getId());
-		answerEntity.setAnswer(answerDto.getAnswer());
-		this.answerRepository.save(answerEntity);
+		Long tokenUserId = userEntity.getId();
+		AnswerEntity answerEntity = this.answerRepository.findUserIdById(id);
+		Long userInAnswerEntity = answerEntity.getUserId();
+
+		if (tokenUserId == userInAnswerEntity) {
+			answerEntity.setUserId(userEntity.getId());
+			answerEntity.setAnswer(answerDto.getAnswer());
+			answerEntity.setFlag(true);
+			this.answerRepository.save(answerEntity);
+		} else {
+			throw new Exception("Your not create this answer, so you can not edit this answer");
+		}
 		return answerDto;
 
 	}
@@ -118,9 +128,18 @@ public class AnswerServiceImpl implements AnswerInterface {
 		Pageable paging = new Pagination().getPagination(pageNumber, pageSize);
 
 		Page<IListAnswerDto> iListAnswerDto;
-		iListAnswerDto = answerRepository.findByOrderByIdAsc(paging, IListAnswerDto.class);
+
+		if ((search == "") || (search == null) || (search.length() == 0)) {
+
+			iListAnswerDto = answerRepository.findByOrderByIdAsc(paging, IListAnswerDto.class);
+
+		} else {
+
+			iListAnswerDto = answerRepository.findByAnswer(search, paging, IListAnswerDto.class);
+
+		}
 
 		return iListAnswerDto;
-	}
 
+	}
 }

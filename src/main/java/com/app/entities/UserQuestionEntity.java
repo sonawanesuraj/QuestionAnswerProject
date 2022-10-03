@@ -1,5 +1,6 @@
 package com.app.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -19,7 +20,12 @@ import org.hibernate.annotations.Where;
 @Table(name = "user_question")
 @Where(clause = "is_active=true")
 @SQLDelete(sql = "UPDATE user_question SET is_active=false WHERE id=?")
-public class UserQuestionEntity {
+public class UserQuestionEntity implements Serializable {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

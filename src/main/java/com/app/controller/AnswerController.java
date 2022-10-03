@@ -9,7 +9,6 @@ import com.app.dto.ErrorResponseDto;
 import com.app.dto.IListAnswerDto;
 import com.app.dto.SuccessResponseDto;
 import com.app.exception.ResourceNotFoundException;
-import com.app.repository.AnswerRepository;
 import com.app.serviceImpl.AnswerServiceImpl;
 import com.app.serviceInterface.AnswerInterface;
 
@@ -35,9 +34,6 @@ public class AnswerController {
 	private AnswerServiceImpl answerServiceImpl;
 
 	@Autowired
-	private AnswerRepository answerRepository;
-
-	@Autowired
 	private AnswerInterface answerInterface;
 
 	@PostMapping()
@@ -50,23 +46,21 @@ public class AnswerController {
 					HttpStatus.ACCEPTED);
 		} catch (ResourceNotFoundException e) {
 
-			return new ResponseEntity<>(new ErrorResponseDto("Answer already exist", "Please add new Answer"),
-					HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Not Added"), HttpStatus.BAD_REQUEST);
 		}
 
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateAnswer(@RequestBody AnswerDto answerDto, @PathVariable long id,
-			HttpServletRequest request) {
+			HttpServletRequest request) throws Exception {
 		try {
 			answerDto = this.answerInterface.updateAnswer(id, answerDto, request);
 			return new ResponseEntity<>(
 					new SuccessResponseDto(" Answer updated sucessfully", "Answer updated !!", answerDto),
 					HttpStatus.CREATED);
-		} catch (ResourceNotFoundException e) {
-			return new ResponseEntity<>(new ErrorResponseDto("Answer Id Not Found  ", "Something went wrong"),
-					HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Not updated"), HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -98,8 +92,8 @@ public class AnswerController {
 
 	@GetMapping()
 	public ResponseEntity<?> getAllAnswer(@RequestParam(defaultValue = "") String search,
-			@RequestParam(defaultValue = "1") String pageNo, @RequestParam(defaultValue = "5") String PageSize) {
-		Page<IListAnswerDto> Answer = answerServiceImpl.getAllAnswer(search, pageNo, PageSize);
+			@RequestParam(defaultValue = "1") String pageNo, @RequestParam(defaultValue = "5") String pageSize) {
+		Page<IListAnswerDto> Answer = answerServiceImpl.getAllAnswer(search, pageNo, pageSize);
 
 		if (Answer.getTotalElements() != 0) {
 			return new ResponseEntity<>(new SuccessResponseDto("All Answers", "Success", Answer.getContent()),
@@ -109,4 +103,5 @@ public class AnswerController {
 
 		return new ResponseEntity<>(new ErrorResponseDto("Data Not Found", "Data Not Found"), HttpStatus.NOT_FOUND);
 	}
+
 }

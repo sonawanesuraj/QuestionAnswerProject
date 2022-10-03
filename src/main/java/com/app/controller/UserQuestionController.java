@@ -2,12 +2,15 @@ package com.app.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.app.dto.ErrorResponseDto;
 import com.app.dto.IListUserQuestion;
 import com.app.dto.SuccessResponseDto;
 import com.app.dto.UserQuestionDto;
 import com.app.exception.ResourceNotFoundException;
 import com.app.serviceImpl.UserQuestionServiceImpl;
+import com.app.serviceInterface.UserQuestionInterface;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +32,9 @@ public class UserQuestionController {
 
 	@Autowired
 	private UserQuestionServiceImpl userQuestionServiceImpl;
+
+	@Autowired
+	private UserQuestionInterface userQuestionInterface;
 
 	@PostMapping()
 	public ResponseEntity<?> addUserQuestion(@RequestBody UserQuestionDto userQuestionDto) {
@@ -89,5 +95,21 @@ public class UserQuestionController {
 		}
 
 		return new ResponseEntity<>(new ErrorResponseDto("Data Not Found", "Data Not Found"), HttpStatus.NOT_FOUND);
+	}
+
+	@GetMapping("/user/{id1}")
+	public ResponseEntity<?> filterUserQuestionById(@PathVariable Long id1, HttpServletRequest request) {
+		try {
+
+			List<IListUserQuestion> iListUserQuestion = this.userQuestionInterface.filterAllUserRecord(id1, request);
+
+			return new ResponseEntity<>(new SuccessResponseDto("Users Information", "Success", iListUserQuestion),
+					HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+
+			return new ResponseEntity<>(
+					new ErrorResponseDto("please check your role", "only admin can see the users information"),
+					HttpStatus.NOT_FOUND);
+		}
 	}
 }

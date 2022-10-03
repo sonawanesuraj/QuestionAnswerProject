@@ -2,6 +2,8 @@ package com.app.serviceInterface;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.app.dto.IListUserQuestion;
 import com.app.dto.UserQuestionDto;
 
@@ -18,5 +20,7 @@ public interface UserQuestionInterface {
 	public List<IListUserQuestion> getUserQuestionById(Long id);
 
 	Page<IListUserQuestion> getAllUserQuestion(String search, String pageNumber, String pageSize);
+
+	public List<IListUserQuestion> filterAllUserRecord(Long id, HttpServletRequest request) throws Exception;
 
 }

@@ -27,6 +27,7 @@ public class QuestionServiceImpl implements QuestionInterface {
 		questionEntity.setQuestionName(questionDto.getQuestionName());
 		questionEntity.setDescription(questionDto.getDescription());
 		questionEntity.setDraft(questionDto.isIs_Draft());
+		questionEntity.setDate(questionDto.getDate());
 		this.questionRepository.save(questionEntity);
 		return questionDto;
 
@@ -37,6 +38,7 @@ public class QuestionServiceImpl implements QuestionInterface {
 		QuestionEntity questionEntity = this.questionRepository.findById(id).orElseThrow();
 		questionEntity.setQuestionName(questionDto.getQuestionName());
 		questionEntity.setDescription(questionDto.getDescription());
+		questionEntity.setFlag(true);
 		this.questionRepository.save(questionEntity);
 		return questionDto;
 

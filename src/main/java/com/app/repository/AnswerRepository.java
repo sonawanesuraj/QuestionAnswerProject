@@ -17,4 +17,8 @@ public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
 
 	Page<IListAnswerDto> findByOrderByIdAsc(Pageable paging, Class<IListAnswerDto> class1);
 
+	AnswerEntity findUserIdById(Long id);
+
+	Page<IListAnswerDto> findByAnswer(String search, Pageable paging, Class<IListAnswerDto> class1);
+
 }

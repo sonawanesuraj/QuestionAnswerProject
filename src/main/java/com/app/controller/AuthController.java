@@ -47,31 +47,28 @@ public class AuthController {
 	private LoggerServiceImpl loggerServiceImpl;
 
 	@PostMapping("/register")
-	public ResponseEntity<?> createUser(@Valid @RequestBody UserDto user, HttpServletRequest request)
+	public ResponseEntity<?> createUser(@RequestBody @Valid UserDto userDto, HttpServletRequest request)
 			throws Exception, DataIntegrityViolationException {
 
-		String email = user.getEmail();
-		String password = user.getPassword();
+		String email = userDto.getEmail();
+		String password = userDto.getPassword();
 
 		if (PasswordValidator.isValid(password) && (PasswordValidator.isValidforEmail(email))) {
 			UserEntity databaseName = authRepository.findByEmailContainingIgnoreCase(email);
 			if (databaseName == null) {
-				authInterface.addUser(user);
+				authInterface.addUser(userDto);
 				return new ResponseEntity<>(new SuccessResponseDto("User Created", "userCreated", "data added"),
 						HttpStatus.CREATED);
 
 			} else {
-				return new ResponseEntity<>(new ErrorResponseDto(
-						"User Email Id Already@NotBlank(message = \"email is Required*emailNameRequired\")\r\n"
-								+ "	@NotEmpty(message = \"email is Required*emailNameRequired\")\r\n"
-								+ "	@NotNull(message = \"email is Required*emailRequired\")\r\n" + " Exist",
-						"userEmailIdAlreadyExist"), HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<>(new ErrorResponseDto("EmailIdAlreadyExist", "EmailIdAlreadyExist"),
+						HttpStatus.BAD_REQUEST);
 			}
 		} else {
 
-			return ResponseEntity.ok(new ErrorResponseDto(
+			return new ResponseEntity<>(new ErrorResponseDto(
 					"Password should have Minimum 8 and maximum 50 characters, at least one uppercase letter, one lowercase letter, one number and one special character and No White Spaces",
-					"Password validation not done"));
+					"Password validation not done"), HttpStatus.BAD_REQUEST);
 
 		}
 

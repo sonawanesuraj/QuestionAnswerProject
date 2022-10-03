@@ -44,12 +44,15 @@ public class AnswerEntity {
 	@OneToOne(fetch = FetchType.LAZY)
 	private QuestionEntity question;
 
+	@Column(name = "is_flag")
+	private Boolean isFlag = false;
+
 	public AnswerEntity() {
 		super();
 	}
 
 	public AnswerEntity(Long id, String answer, boolean isActive, Date createdAt, Date updatedAt, Long userId,
-			QuestionEntity question) {
+			QuestionEntity question, boolean isFlag) {
 		super();
 		this.id = id;
 		this.answer = answer;
@@ -58,6 +61,7 @@ public class AnswerEntity {
 		UpdatedAt = updatedAt;
 		this.userId = userId;
 		this.question = question;
+		this.isFlag = isFlag;
 	}
 
 	public Long getId() {
@@ -114,6 +118,14 @@ public class AnswerEntity {
 
 	public void setQuestion(QuestionEntity question) {
 		this.question = question;
+	}
+
+	public boolean isFlag() {
+		return isFlag;
+	}
+
+	public void setFlag(boolean isFlag) {
+		this.isFlag = isFlag;
 	}
 
 }
