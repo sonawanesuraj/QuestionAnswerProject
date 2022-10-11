@@ -2,6 +2,8 @@ package com.app.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.app.dto.ErrorResponseDto;
 import com.app.dto.IListQuestionDto;
 import com.app.dto.QuestionDto;
@@ -40,13 +42,13 @@ public class QuestionController {
 	private QuestionServiceImpl questionServiceImpl;
 
 	@PostMapping()
-	public ResponseEntity<?> addQuestion(@RequestBody QuestionDto questionDto) {
+	public ResponseEntity<?> addQuestion(@RequestBody QuestionDto questionDto, HttpServletRequest request) {
 
 		try {
 			QuestionEntity questionEntity = this.questionRepository
 					.findByQuestionNameContainingIgnoreCase(questionDto.getQuestionName());
 			if (questionEntity == null) {
-				QuestionDto questionDto1 = this.questionInterface.addQuestion(questionDto);
+				QuestionDto questionDto1 = this.questionInterface.addQuestion(questionDto, request);
 				return new ResponseEntity<>(
 						new SuccessResponseDto("Question Added Successfully", "Question Added", "Data added"),
 						HttpStatus.ACCEPTED);

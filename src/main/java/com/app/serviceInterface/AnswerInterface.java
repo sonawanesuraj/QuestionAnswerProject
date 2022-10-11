@@ -20,4 +20,6 @@ public interface AnswerInterface {
 
 	Page<IListAnswerDto> getAllAnswer(String search, String pageNumber, String pageSize);
 
+	List<IListAnswerDto> getQuestionAnswerById(Long id);
+
 }

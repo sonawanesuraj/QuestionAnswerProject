@@ -9,7 +9,6 @@ import com.app.dto.ErrorResponseDto;
 import com.app.dto.IListAnswerDto;
 import com.app.dto.SuccessResponseDto;
 import com.app.exception.ResourceNotFoundException;
-import com.app.serviceImpl.AnswerServiceImpl;
 import com.app.serviceInterface.AnswerInterface;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AnswerController {
 
 	@Autowired
-	private AnswerServiceImpl answerServiceImpl;
-
-	@Autowired
 	private AnswerInterface answerInterface;
 
 	@PostMapping()
@@ -44,7 +40,7 @@ public class AnswerController {
 			return new ResponseEntity<>(
 					new SuccessResponseDto("Answer Added Successfully", "Answer Added", "Data added"),
 					HttpStatus.ACCEPTED);
-		} catch (ResourceNotFoundException e) {
+		} catch (Exception e) {
 
 			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Not Added"), HttpStatus.BAD_REQUEST);
 		}
@@ -79,7 +75,7 @@ public class AnswerController {
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getAnswerById(@PathVariable Long id) {
 		try {
-			List<IListAnswerDto> iListAnswerDto = this.answerServiceImpl.getAnswerById(id);
+			List<IListAnswerDto> iListAnswerDto = this.answerInterface.getAnswerById(id);
 			return new ResponseEntity<>(new SuccessResponseDto(" Answers:", "Success", iListAnswerDto), HttpStatus.OK);
 		} catch (Exception e) {
 
@@ -92,8 +88,8 @@ public class AnswerController {
 
 	@GetMapping()
 	public ResponseEntity<?> getAllAnswer(@RequestParam(defaultValue = "") String search,
-			@RequestParam(defaultValue = "1") String pageNo, @RequestParam(defaultValue = "5") String pageSize) {
-		Page<IListAnswerDto> Answer = answerServiceImpl.getAllAnswer(search, pageNo, pageSize);
+			@RequestParam(defaultValue = "1") String pageNo, @RequestParam(defaultValue = "25") String pageSize) {
+		Page<IListAnswerDto> Answer = answerInterface.getAllAnswer(search, pageNo, pageSize);
 
 		if (Answer.getTotalElements() != 0) {
 			return new ResponseEntity<>(new SuccessResponseDto("All Answers", "Success", Answer.getContent()),
@@ -104,4 +100,17 @@ public class AnswerController {
 		return new ResponseEntity<>(new ErrorResponseDto("Data Not Found", "Data Not Found"), HttpStatus.NOT_FOUND);
 	}
 
+	@GetMapping("/QuestionAnswer/{id}")
+	public ResponseEntity<?> getAnswerQuestionById(@PathVariable Long id) {
+		try {
+			List<IListAnswerDto> answerDto = this.answerInterface.getQuestionAnswerById(id);
+			return new ResponseEntity<>(new SuccessResponseDto(" Answers:", "Success", answerDto), HttpStatus.OK);
+		} catch (ResourceNotFoundException e) {
+
+			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Answer not found "),
+					HttpStatus.BAD_REQUEST);
+
+		}
+
+	}
 }

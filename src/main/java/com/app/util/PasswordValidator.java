@@ -5,19 +5,17 @@ import java.util.regex.Pattern;
 
 public class PasswordValidator {
 
-	// digit + lowercase char + uppercase char + punctuation + symbol=no white space
 	private static final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,50}$";
 
 	private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
 
 	public static boolean isValid(final String password) {
-		System.out.println("HELLO " + password);
 		Matcher matcher = pattern.matcher(password);
-		System.out.println("HELLO2");
 		return matcher.matches();
 	}
 
 	private static final String MAIL_PATTERN = "^\\S+@\\S+\\.\\S+$";
+
 	private static final Pattern mail = Pattern.compile(MAIL_PATTERN);
 
 	public static boolean isValidforEmail(final String email) {

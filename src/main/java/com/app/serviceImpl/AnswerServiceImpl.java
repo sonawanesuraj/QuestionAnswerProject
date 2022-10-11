@@ -3,6 +3,7 @@ package com.app.serviceImpl;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import com.app.configuration.jwtTokenUtil;
 import com.app.dto.AnswerDto;
@@ -43,7 +44,7 @@ public class AnswerServiceImpl implements AnswerInterface {
 	private UserRoleRepository userRoleRepository;
 
 	@Override
-	public AnswerDto addAnswer(AnswerDto answerDto, HttpServletRequest request) {
+	public AnswerDto addAnswer(@Valid AnswerDto answerDto, HttpServletRequest request) {
 
 		AnswerEntity answerEntity = new AnswerEntity();
 		answerEntity.setAnswer(answerDto.getAnswer());
@@ -95,16 +96,19 @@ public class AnswerServiceImpl implements AnswerInterface {
 		UserEntity userEntity = authRepository.findByEmailContainingIgnoreCase(email);
 		Long userId = userEntity.getId();
 		System.out.println(userId);
-		if (answerEntity.getUserId().equals(id)) {
+		if (answerEntity.getUserId().equals(userId)) {
 
 			answerRepository.deleteById(id);
 			return;
 
 		} else {
-			List<UserRoleEntity> userRoleEntity1 = userRoleRepository.findByRole1(userId);
+			List<UserRoleEntity> userRoleEntity1 = userRoleRepository.findByRole(userId);
 			for (int i = 0; i < userRoleEntity1.size(); i++) {
+				System.out.println(userRoleEntity1.get(i).getUser().getName());
+				System.out.println(userRoleEntity1.get(i).getRole().getRoleName());
+
 				String roleName = userRoleEntity1.get(i).getRole().getRoleName();
-				if (roleName.equals("admin")) {
+				if (roleName.equals("ADMIN")) {
 					answerRepository.deleteById(id);
 					return;
 				}
@@ -112,6 +116,7 @@ public class AnswerServiceImpl implements AnswerInterface {
 			}
 
 			throw new Exception("Only Admin and User Can Access to Delete the Comment ");
+
 		}
 	}
 
@@ -142,4 +147,15 @@ public class AnswerServiceImpl implements AnswerInterface {
 		return iListAnswerDto;
 
 	}
+
+	@Override
+	public List<IListAnswerDto> getQuestionAnswerById(Long id) {
+
+		this.questionRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Question not found"));
+
+		List<IListAnswerDto> answerDto;
+		return answerDto = answerRepository.findByQuestionId(id, IListAnswerDto.class);
+
+	}
+
 }

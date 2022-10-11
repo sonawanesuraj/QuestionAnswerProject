@@ -2,10 +2,16 @@ package com.app.serviceImpl;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import com.app.configuration.jwtTokenUtil;
 import com.app.dto.IListQuestionDto;
 import com.app.dto.QuestionDto;
 import com.app.entities.QuestionEntity;
+import com.app.entities.UserEntity;
 import com.app.exception.ResourceNotFoundException;
+import com.app.repository.AnswerRepository;
+import com.app.repository.AuthRepository;
 import com.app.repository.QuestionRepository;
 import com.app.serviceInterface.QuestionInterface;
 import com.app.util.Pagination;
@@ -21,9 +27,24 @@ public class QuestionServiceImpl implements QuestionInterface {
 	@Autowired
 	private QuestionRepository questionRepository;
 
+	@Autowired
+	AnswerRepository answerRepository;
+
+	@Autowired
+	private jwtTokenUtil jwtTokenUtil;
+
+	@Autowired
+	private AuthRepository authRepository;
+
 	@Override
-	public QuestionDto addQuestion(QuestionDto questionDto) {
+	public QuestionDto addQuestion(QuestionDto questionDto, HttpServletRequest request) {
 		QuestionEntity questionEntity = new QuestionEntity();
+		final String header = request.getHeader("Authorization");
+		String requestToken = header.substring(7);
+		final String email = jwtTokenUtil.getEmailFromToken(requestToken);
+		UserEntity userEntity = authRepository.findByEmailContainingIgnoreCase(email);
+		Long userId = userEntity.getId();
+		questionEntity.setUserId(userId);
 		questionEntity.setQuestionName(questionDto.getQuestionName());
 		questionEntity.setDescription(questionDto.getDescription());
 		questionEntity.setDraft(questionDto.isIs_Draft());

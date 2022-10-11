@@ -1,10 +1,18 @@
 package com.app.serviceImpl;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import com.app.configuration.jwtTokenUtil;
 import com.app.dto.IUserListDto;
 import com.app.dto.UserDto;
 import com.app.entities.UserEntity;
+import com.app.entities.UserRoleEntity;
 import com.app.exception.ResourceNotFoundException;
+import com.app.repository.AuthRepository;
 import com.app.repository.UserRepository;
+import com.app.repository.UserRoleRepository;
 import com.app.serviceInterface.UserInterface;
 import com.app.util.Pagination;
 
@@ -23,18 +31,27 @@ public class UserServiceImpl implements UserInterface {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@Override
-	public UserDto getUserById(Long id) {
+	@Autowired
+	private jwtTokenUtil jwtTokenUtil;
 
-		UserEntity userEntity = this.userRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("user id not found, Please enter correct userId"));
-		UserDto userDto = new UserDto();
-		userDto.setId(userEntity.getId());
-		userDto.setName(userEntity.getName());
-		userDto.setEmail(userEntity.getEmail());
+	@Autowired
+	private AuthRepository authRepository;
 
-		return userDto;
-	}
+	@Autowired
+	private UserRoleRepository userRoleRepository;
+
+//	@Override
+//	public UserDto getUserById(Long id) {
+//
+//		UserEntity userEntity = this.userRepository.findById(id)
+//				.orElseThrow(() -> new ResourceNotFoundException("user id not found, Please enter correct userId"));
+//		UserDto userDto = new UserDto();
+//		userDto.setId(userEntity.getId());
+//		userDto.setName(userEntity.getName());
+//		userDto.setEmail(userEntity.getEmail());
+//
+//		return userDto;
+//	}
 
 	public Page<IUserListDto> getAllUsers(String search, String pageNo, String pageSize) {
 
@@ -66,4 +83,34 @@ public class UserServiceImpl implements UserInterface {
 				.orElseThrow(() -> new ResourceNotFoundException("Resource Not Found for this Id "));
 		userRepository.deleteById(id);
 	}
+
+	@Override
+	public List<IUserListDto> getUserById(Long id) {
+		List<IUserListDto> iUserListDto;
+		return iUserListDto = this.userRepository.findById(id, IUserListDto.class);
+	}
+
+	@Override
+	public List<IUserListDto> filterAllUserRecord(Long id, HttpServletRequest request) throws Exception {
+		List<IUserListDto> iUserListDto;
+		final String header = request.getHeader("Authorization");
+		String requestToken = header.substring(7);
+		final String email = jwtTokenUtil.getEmailFromToken(requestToken);
+		UserEntity userEntity = authRepository.findByEmailContainingIgnoreCase(email);
+		Long userId = userEntity.getId();
+		UserRoleEntity userRoleEntity = userRoleRepository.findRoleIdByUserId(userId);
+		String userRole = userRoleEntity.getRole().getRoleName();
+		if (userRole.equals("ADMIN")) {
+
+			iUserListDto = this.userRepository.findById(id, IUserListDto.class);
+
+			return iUserListDto;
+
+		} else {
+
+			throw new Exception("this user is not a admin , only admin have a access to see users information");
+		}
+
+	}
+
 }

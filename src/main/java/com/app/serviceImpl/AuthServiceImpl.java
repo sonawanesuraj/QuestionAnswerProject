@@ -7,8 +7,11 @@ import com.app.entities.UserEntity;
 import com.app.exception.ResourceNotFoundException;
 import com.app.repository.AuthRepository;
 import com.app.serviceInterface.AuthInterface;
+import com.app.util.CacheOperation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,6 +28,9 @@ public class AuthServiceImpl implements AuthInterface, UserDetailsService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@Autowired
+	private CacheOperation cache;
+
 	@Override
 	public void addUser(UserDto user) {
 		UserEntity userEntity = new UserEntity();
@@ -37,10 +43,38 @@ public class AuthServiceImpl implements AuthInterface, UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		UserEntity userEntity = new UserEntity();
 
-		UserEntity userEntity = this.authRepository.findByEmailContainingIgnoreCase(email);
+		if (!cache.isKeyExist(email, email)) {
 
-		if (userEntity == null) {
+			System.out.println("FETCH FROM DATABASE");
+
+			userEntity = this.authRepository.findByEmailContainingIgnoreCase(email);
+			cache.addInCache(email, email, userEntity.toString());
+
+		} else {
+
+			String jsonString = (String) cache.getFromCache(email, email);
+			System.out.println("FROM CACHE");
+			JSONObject jsonObject = null;
+
+			try {
+				jsonObject = new JSONObject(jsonString);
+				userEntity.setId(Long.parseLong(jsonObject.getString("id")));
+				userEntity.setEmail(jsonObject.getString("email"));
+				userEntity.setPassword(jsonObject.getString("password"));
+				System.out.println("ADD IN CACHE");
+
+			} catch (JSONException e) {
+				userEntity = null;
+			}
+
+		}
+
+		if (userEntity == null)
+
+		{
+
 			throw new ResourceNotFoundException("User OR Password not found");
 		}
 

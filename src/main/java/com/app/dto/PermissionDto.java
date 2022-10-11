@@ -2,7 +2,6 @@ package com.app.dto;
 
 public class PermissionDto {
 
-	private Long id;
 	private String actionName;
 	private String description;
 	private String method;
@@ -14,22 +13,13 @@ public class PermissionDto {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PermissionDto(Long id, String actionName, String description, String method, String path, String baseUrl) {
+	public PermissionDto(String actionName, String description, String method, String path, String baseUrl) {
 		super();
-		this.id = id;
 		this.actionName = actionName;
 		this.description = description;
 		this.method = method;
 		this.path = path;
 		this.baseUrl = baseUrl;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getActionName() {

@@ -26,15 +26,12 @@ public interface UserRoleRepository extends JpaRepository<UserRoleEntity, Long> 
 	@Query(value = "UPDATE user_role u SET role_id=:id2 WHERE u.user_id=:id", nativeQuery = true)
 	void updateUserRole(Long id, Long id2);
 
-//	@Query(value = "SELECT * FROM user_role u WHERE u.user_id=:userId", nativeQuery = true)
-//	UserRoleEntity findByUserRoleId(Long userId);
-
 	List<IListUserRole> findById(Long id, Class<IListUserRole> class1);
 
 	Page<IListUserRole> findByOrderByIdAsc(Pageable page, Class<IListUserRole> iListUserRole);
 
 	@Query(value = "SELECT * FROM user_role u WHERE u.user_id=:userId", nativeQuery = true)
-	List<UserRoleEntity> findByRole1(@Param("userId") Long userId);
+	List<UserRoleEntity> findByRole(@Param("userId") Long userId);
 
 	UserRoleEntity findRoleIdByUserId(Long userId);
 

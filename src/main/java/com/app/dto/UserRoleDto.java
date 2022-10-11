@@ -1,20 +1,12 @@
 package com.app.dto;
 
 public class UserRoleDto {
-	private Long id;
+
 	private Long userId;
 	private Long roleId;
 
 	public UserRoleDto() {
 		super();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public Long getUserId() {
@@ -33,9 +25,8 @@ public class UserRoleDto {
 		this.roleId = roleId;
 	}
 
-	public UserRoleDto(Long id, Long userId, Long roleId) {
+	public UserRoleDto(Long userId, Long roleId) {
 		super();
-		this.id = id;
 		this.userId = userId;
 		this.roleId = roleId;
 	}

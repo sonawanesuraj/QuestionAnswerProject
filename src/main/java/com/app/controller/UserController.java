@@ -1,5 +1,9 @@
 package com.app.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import com.app.dto.ErrorResponseDto;
 import com.app.dto.IUserListDto;
 import com.app.dto.SuccessResponseDto;
@@ -34,7 +38,7 @@ public class UserController {
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getUserById(@PathVariable("id") Long id) {
 		try {
-			UserDto userDto = this.userInterface.getUserById(id);
+			List<IUserListDto> userDto = this.userInterface.getUserById(id);
 			return new ResponseEntity<>(new SuccessResponseDto("User Get Successfully", "Success", userDto),
 					HttpStatus.OK);
 		} catch (ResourceNotFoundException e) {
@@ -78,6 +82,23 @@ public class UserController {
 		} catch (Exception e) {
 
 			return ResponseEntity.ok(new ErrorResponseDto(e.getMessage(), "Enter Valid Id"));
+
+		}
+	}
+
+	@GetMapping("/userRecord/{id1}")
+	public ResponseEntity<?> filterUserQuestionById(@PathVariable Long id1, HttpServletRequest request) {
+		try {
+
+			List<IUserListDto> iUserListDto = this.userInterface.filterAllUserRecord(id1, request);
+
+			return new ResponseEntity<>(new SuccessResponseDto("Users Information", "Success", iUserListDto),
+					HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+
+			return new ResponseEntity<>(
+					new ErrorResponseDto("please check your role", "only admin can see the users information"),
+					HttpStatus.NOT_FOUND);
 		}
 	}
 

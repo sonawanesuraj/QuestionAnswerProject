@@ -1,7 +1,6 @@
 package com.app.dto;
 
 public class AnswerDto {
-	private Long id;
 	private String answer;
 	private Long question;
 	private boolean isDraft;
@@ -11,20 +10,11 @@ public class AnswerDto {
 		// TODO Auto-generated constructor stub
 	}
 
-	public AnswerDto(Long id, String answer, Long question, boolean isDraft) {
+	public AnswerDto(String answer, Long question, boolean isDraft) {
 		super();
-		this.id = id;
 		this.answer = answer;
 		this.question = question;
 		this.isDraft = isDraft;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getAnswer() {

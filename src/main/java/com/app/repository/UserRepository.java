@@ -1,5 +1,7 @@
 package com.app.repository;
 
+import java.util.List;
+
 import com.app.dto.IUserListDto;
 import com.app.entities.UserEntity;
 
@@ -16,5 +18,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 	Page<IUserListDto> findByNameIgnoreCaseContaining(String search, Pageable pageable, Class<IUserListDto> class1);
 
 	UserEntity findByEmail(String email);
+
+	List<IUserListDto> findById(Long id, Class<IUserListDto> class1);
 
 }

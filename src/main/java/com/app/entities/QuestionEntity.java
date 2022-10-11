@@ -1,19 +1,13 @@
 package com.app.entities;
 
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -56,16 +50,14 @@ public class QuestionEntity {
 	@Column(name = "is_flag")
 	private boolean isFlag = false;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "question", cascade = CascadeType.ALL)
-	@JsonBackReference
-	List<UserQuestionEntity> userQuestion;
+	private Long userId;
 
 	public QuestionEntity() {
 		super();
 	}
 
 	public QuestionEntity(Long id, String questionName, String description, boolean isActive, Date createdAt,
-			Date updatedAt, boolean isDraft, Date date, boolean isFlag, List<UserQuestionEntity> userQuestion) {
+			Date updatedAt, boolean isDraft, Date date, boolean isFlag, Long userId) {
 		super();
 		this.id = id;
 		this.questionName = questionName;
@@ -76,7 +68,7 @@ public class QuestionEntity {
 		this.isDraft = isDraft;
 		this.date = date;
 		this.isFlag = isFlag;
-		this.userQuestion = userQuestion;
+		this.userId = userId;
 	}
 
 	public Long getId() {
@@ -151,12 +143,12 @@ public class QuestionEntity {
 		this.isFlag = isFlag;
 	}
 
-	public List<UserQuestionEntity> getUserQuestion() {
-		return userQuestion;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUserQuestion(List<UserQuestionEntity> userQuestion) {
-		this.userQuestion = userQuestion;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 }

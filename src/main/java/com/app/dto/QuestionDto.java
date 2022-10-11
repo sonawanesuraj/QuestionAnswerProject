@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 public class QuestionDto {
-	private Long id;
 	private String questionName;
 	private String description;
 	private boolean is_Draft;
@@ -18,21 +17,12 @@ public class QuestionDto {
 		// TODO Auto-generated constructor stub
 	}
 
-	public QuestionDto(Long id, String questionName, String description, boolean is_Draft, Date date) {
+	public QuestionDto(String questionName, String description, boolean is_Draft, Date date) {
 		super();
-		this.id = id;
 		this.questionName = questionName;
 		this.description = description;
 		this.is_Draft = is_Draft;
 		this.date = date;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getQuestionName() {

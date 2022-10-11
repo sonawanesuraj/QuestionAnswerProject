@@ -21,4 +21,13 @@ public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
 
 	Page<IListAnswerDto> findByAnswer(String search, Pageable paging, Class<IListAnswerDto> class1);
 
+	List<IListAnswerDto> findByQuestionId(Long id, Class<IListAnswerDto> class1);
+
+//	@Transactional
+//	@Query(value = "select a.user_id,a.answer from answer a where a.question_id=:question_id", nativeQuery = true)
+//	List<AnswerDto> findByAnswerAndQuestionId(@Param("question_id") Long question_id);
+
+//	@Transactional
+//	@Query(value = "select a.user_id,a.answer from answer a where a.question_id=:question_id", nativeQuery = true)
+//	List<IListAnswerDto> findIdByQuestion(@Param("question_id") Long questionId, Class<IListAnswerDto> class1);
 }
