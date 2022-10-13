@@ -29,6 +29,9 @@ public class CacheOperation {
 
 	public void removeKeyFromCache(String key) {
 		cc.redisTemplate().delete(key);
-		return;
+	}
+
+	public void removeAllFromRedisCache() {
+		cc.redisConnectionFactory().getConnection().flushAll();
 	}
 }

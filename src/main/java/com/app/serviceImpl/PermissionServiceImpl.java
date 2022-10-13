@@ -8,6 +8,7 @@ import com.app.entities.PermissionEntity;
 import com.app.exception.ResourceNotFoundException;
 import com.app.repository.PermissionRepository;
 import com.app.serviceInterface.PermissionInterface;
+import com.app.util.CacheOperation;
 import com.app.util.Pagination;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class PermissionServiceImpl implements PermissionInterface {
 	@Autowired
 	private PermissionRepository permissionRepository;
 
+	@Autowired
+	private CacheOperation cache;
+
 	@Override
 	public PermissionDto addPermission(PermissionDto permissionDto) {
 		PermissionEntity permissionEntity = new PermissionEntity();
@@ -30,6 +34,8 @@ public class PermissionServiceImpl implements PermissionInterface {
 		permissionEntity.setPath(permissionDto.getPath());
 		permissionEntity.setBaseUrl(permissionDto.getBaseUrl());
 		permissionRepository.save(permissionEntity);
+		cache.removeAllFromRedisCache();
+
 		return permissionDto;
 	}
 
@@ -42,6 +48,7 @@ public class PermissionServiceImpl implements PermissionInterface {
 		permissionEntity.setPath(permissionDto.getPath());
 		permissionEntity.setBaseUrl(permissionDto.getBaseUrl());
 		permissionRepository.save(permissionEntity);
+
 		return permissionDto;
 	}
 
@@ -50,6 +57,8 @@ public class PermissionServiceImpl implements PermissionInterface {
 		this.permissionRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Resource Not Found For this id"));
 		this.permissionRepository.deleteById(id);
+		cache.removeAllFromRedisCache();
+
 	}
 
 	@Override

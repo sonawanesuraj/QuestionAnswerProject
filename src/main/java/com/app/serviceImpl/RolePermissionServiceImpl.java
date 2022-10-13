@@ -13,6 +13,7 @@ import com.app.repository.PermissionRepository;
 import com.app.repository.RolePermissionRepository;
 import com.app.repository.RoleRepository;
 import com.app.serviceInterface.RolePermissionInterface;
+import com.app.util.CacheOperation;
 import com.app.util.Pagination;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class RolePermissionServiceImpl implements RolePermissionInterface {
 
 	@Autowired
 	private PermissionRepository permissionRepository;
+
+	@Autowired
+	private CacheOperation cache;
 
 	@Override
 	public RolePermissionDto addRolePermission(RolePermissionDto rolePermissionDto) {
@@ -101,6 +105,13 @@ public class RolePermissionServiceImpl implements RolePermissionInterface {
 		iListRolePermission = rolePermissionRepository.findByOrderByIdAsc(paging, IListRolePermission.class);
 
 		return iListRolePermission;
+	}
+
+	public void removeFromAllCache() {
+
+		this.rolePermissionRepository.findAll();
+
+		cache.removeAllFromRedisCache();
 	}
 
 }
